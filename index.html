@@ -133,7 +133,7 @@
 
 <div class="mobile-screen" id="mobile-screen">
   <div style="padding: 2rem; max-width: 400px;">
-    <h2>Welcome to R N Sahay and Sons LLP_new4</h2>
+    <h2>Welcome to R N Sahay and Sons LLP_new5</h2>
     <p>Please enter your name and mobile number to continue:</p>
     <input type="text" id="name-input" placeholder="Enter your name" style="padding: 0.75rem; width: 100%; margin-bottom: 1rem; border: 1px solid #ccc; border-radius: 8px;" />
     <input type="tel" id="mobile-input" placeholder="Enter mobile number" style="padding: 0.75rem; width: 100%; border: 1px solid #ccc; border-radius: 8px;" />
@@ -271,20 +271,30 @@ async function sendToWebhook(message) {
       body: JSON.stringify(payload)
     });
 
+    // Check for HTTP failure
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
     const data = await response.json();
+    console.log("🟢 Webhook response:", data); // Inspect what you really get
+
     removeTypingIndicator();
 
+    // Final strict & safe check
     if (data && typeof data.reply === "string" && data.reply.trim() !== "") {
-  appendMessage(data.reply, 'bot-message', true);
-} else {
-  console.error("Invalid response:", data);
-  appendMessage('Sorry, something went wrong. 😔', 'bot-message');
-}
+      appendMessage(data.reply, 'bot-message', true);
+    } else {
+      appendMessage("❗ Unexpected reply format. Please try again.", 'bot-message');
+      console.error("🔴 Bad reply format:", data);
+    }
   } catch (err) {
     removeTypingIndicator();
+    console.error("❌ Webhook call failed:", err);
     appendMessage('Error connecting to the server. Please try again later.', 'bot-message');
   }
 }
+
 
   function convertLinks(text) {
   return text.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" style="color:#0b5394; text-decoration: underline;">$1</a>');
