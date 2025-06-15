@@ -133,7 +133,7 @@
 
 <div class="mobile-screen" id="mobile-screen">
   <div style="padding: 2rem; max-width: 400px;">
-    <h2>Welcome to R N Sahay and Sons LLP</h2>
+    <h2>Welcome to R N Sahay and Sons LLP_new</h2>
     <p>Please enter your name and mobile number to continue:</p>
     <input type="text" id="name-input" placeholder="Enter your name" style="padding: 0.75rem; width: 100%; margin-bottom: 1rem; border: 1px solid #ccc; border-radius: 8px;" />
     <input type="tel" id="mobile-input" placeholder="Enter mobile number" style="padding: 0.75rem; width: 100%; border: 1px solid #ccc; border-radius: 8px;" />
@@ -146,10 +146,20 @@
 </div>
 
 <div class="chat-container" id="chat-container" style="display: none;">
-  <div class="chat-header">
-    <img src="Logo.png" alt="Vira.ai" />
+  <div class="chat-header" style="justify-content: space-between;">
+  <div style="display: flex; align-items: center;">
+    <img src="Logo.png" alt="Logo" />
     <strong>AI Legal Advisor</strong>
   </div>
+  <div style="display: flex; align-items: center; gap: 12px;">
+    <a href="tel:+919059052604" title="Call Us">
+      <img src="https://img.icons8.com/ios-filled/24/000000/phone.png" alt="Call" style="height: 22px; cursor: pointer;" />
+    </a>
+    <a href="mailto:contact@rnsahayandsons.in" title="Email Us">
+      <img src="https://img.icons8.com/ios-filled/24/000000/new-post.png" alt="Mail" style="height: 22px; cursor: pointer;" />
+    </a>
+  </div>
+</div>
   <div class="chat-box" id="chat-box"></div>
   <div class="input-box">
     <input type="text" id="user-input" placeholder="Type your message..." onkeypress="handleKey(event)" />
@@ -202,7 +212,7 @@
   const chatBox = document.getElementById('chat-box');
   const div = document.createElement('div');
   div.className = `message ${className}`;
-  div.innerHTML = text;  // ⬅️ Allows HTML tags (e.g., <br>, <b>, etc.) from n8n
+  div.innerHTML = convertLinks(text); // ✅ Handles URLs
   chatBox.appendChild(div);
   chatBox.scrollTop = chatBox.scrollHeight;
 }
@@ -269,6 +279,10 @@ async function sendToWebhook(message) {
     removeTypingIndicator();
     appendMessage('Error connecting to the server. Please try again later.', 'bot-message');
   }
+}
+
+  function convertLinks(text) {
+  return text.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" style="color:#0b5394; text-decoration: underline;">$1</a>');
 }
   
 </script>
